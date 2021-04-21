@@ -45,6 +45,7 @@ group :development do
   gem 'chartkick'
   gem 'highcharts'
   gem 'faker'
+  gem 'rails-erd'
 end
 
 group :test do

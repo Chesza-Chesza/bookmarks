@@ -12,12 +12,12 @@
 
 <p>
   <strong>Kind:</strong>
-  <%= @bookmark.kind_id %>
+  <%= @bookmark.kind.name %>
 </p>
 
 <p>
   <strong>Category:</strong>
-  <%= @bookmark.category_id %>
+  <%= @bookmark.category.name %>
 </p>
 
 <%= link_to 'Edit', edit_bookmark_path(@bookmark) %> |

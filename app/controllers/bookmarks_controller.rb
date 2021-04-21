@@ -4,6 +4,7 @@ class BookmarksController < ApplicationController
   # GET /bookmarks or /bookmarks.json
   def index
     @bookmarks = Bookmark.all
+    @bookmark = Bookmark.new
   end
 
   # GET /bookmarks/1 or /bookmarks/1.json
@@ -18,6 +19,18 @@ class BookmarksController < ApplicationController
   # GET /bookmarks/1/edit
   def edit
   end
+  
+  def show_by_category
+    #@bookmarks = Bookmark.where(category: show_by_category_params).select{ |b| b.category.private == false}
+    @bookmarks = Bookmark.where(category: params[:category_id]).select{ |b| b.category.private == false}
+
+    if @bookmarks.size > 0
+      render json: @bookmarks.as_json(include: [:category, :kind]), status: 200
+    else
+      render json: '{"error": "not_found"}', status: 200
+    end
+  end
+
 
   # POST /bookmarks or /bookmarks.json
   def create
@@ -27,6 +40,7 @@ class BookmarksController < ApplicationController
       if @bookmark.save
         format.html { redirect_to @bookmark, notice: "Bookmark was successfully created." }
         format.json { render :show, status: :created, location: @bookmark }
+        format.js {}
       else
         format.html { render :new, status: :unprocessable_entity }
         format.json { render json: @bookmark.errors, status: :unprocessable_entity }
@@ -60,6 +74,10 @@ class BookmarksController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_bookmark
       @bookmark = Bookmark.find(params[:id])
+    end
+
+    def show_by_category_params
+      params.require(:category)
     end
 
     # Only allow a list of trusted parameters through.
